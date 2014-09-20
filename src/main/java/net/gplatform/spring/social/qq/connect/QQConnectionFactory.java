@@ -23,7 +23,7 @@ import org.springframework.social.connect.support.OAuth2ConnectionFactory;
 public class QQConnectionFactory extends OAuth2ConnectionFactory<QQ> {
 
 	public QQConnectionFactory(String consumerKey, String consumerSecret) {
-		super("weibo", new QQServiceProvider(consumerKey, consumerSecret), new QQAdapter());
+		super("qq", new QQServiceProvider(consumerKey, consumerSecret), new QQAdapter());
 	}
 
 }

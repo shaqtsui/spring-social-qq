@@ -28,12 +28,13 @@ public class QQServiceProvider extends AbstractOAuth2ServiceProvider<QQ> {
 	}
 
 	private static OAuth2Template getOAuth2Template(String clientId, String clientSecret) {
-		OAuth2Template oAuth2Template = new QQOAuth2Template(clientId, clientSecret, "https://api.weibo.com/oauth2/authorize",
-				"https://api.weibo.com/oauth2/access_token");
+		OAuth2Template oAuth2Template = new OAuth2Template(clientId, clientSecret, "https://graph.qq.com/oauth2.0/authorize",
+				"https://graph.qq.com/oauth2.0/token");
 		oAuth2Template.setUseParametersForClientAuthentication(true);
 		return oAuth2Template;
 	}
 
+	@Override
 	public QQ getApi(String accessToken) {
 		return new QQTemplate(accessToken);
 	}

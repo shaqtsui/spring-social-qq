@@ -24,8 +24,7 @@ import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
 import org.springframework.social.connect.UserProfileBuilder;
 
-import weibo4j.model.User;
-import weibo4j.model.WeiboException;
+import com.qq.connect.javabeans.weibo.UserInfoBean;
 
 public class QQAdapter implements ApiAdapter<QQ> {
 	private static final Logger LOG = LoggerFactory.getLogger(QQAdapter.class);
@@ -33,9 +32,9 @@ public class QQAdapter implements ApiAdapter<QQ> {
 	@Override
 	public boolean test(QQ api) {
 		try {
-			api.accountOperations().getAccountPrivacy();
+			api.userInfoOperations().getUserInfo();
 			return true;
-		} catch (WeiboException e) {
+		} catch (Exception e) {
 			LOG.debug("", e);
 			return false;
 		}
@@ -44,12 +43,11 @@ public class QQAdapter implements ApiAdapter<QQ> {
 	@Override
 	public void setConnectionValues(QQ api, ConnectionValues values) {
 		try {
-			String uid = api.accountOperations().getUid().getString("uid");
-			User user = api.usersOperations().showUserById(uid);
-			values.setProviderUserId(user.getId() + "");
-			values.setDisplayName(user.getScreenName());
-			values.setProfileUrl(user.getUrl());
-			values.setImageUrl(user.getAvatarLarge());
+			UserInfoBean uib = api.userInfoOperations().getUserInfo();
+			values.setProviderUserId(uib.getName());
+			values.setDisplayName(uib.getNickName());
+			values.setProfileUrl(uib.getAvatar().getAvatarURL50());
+			values.setImageUrl(uib.getAvatar().getAvatarURL50());
 		} catch (Exception e) {
 			LOG.error("error setConnectionValues", e);
 		}
@@ -58,9 +56,8 @@ public class QQAdapter implements ApiAdapter<QQ> {
 	@Override
 	public UserProfile fetchUserProfile(QQ api) {
 		try {
-			String uid = api.accountOperations().getUid().getString("uid");
-			User user = api.usersOperations().showUserById(uid);
-			return new UserProfileBuilder().setName(user.getName()).setUsername(uid).build();
+			UserInfoBean uib = api.userInfoOperations().getUserInfo();
+			return new UserProfileBuilder().setName(uib.getName()).setUsername(uib.getNickName()).build();
 		} catch (Exception e) {
 			LOG.error("error fetchUserProfile", e);
 		}
@@ -71,8 +68,8 @@ public class QQAdapter implements ApiAdapter<QQ> {
 	@Override
 	public void updateStatus(QQ api, String message) {
 		try {
-			api.timelineOperations().UpdateStatus(message);
-		} catch (WeiboException e) {
+			api.weiboOperations().addWeibo(message);
+		} catch (Exception e) {
 			LOG.error("error updateStatus", e);
 		}
 	}

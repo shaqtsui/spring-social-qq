@@ -17,48 +17,15 @@ package net.gplatform.spring.social.qq.api;
 
 import org.springframework.social.ApiBinding;
 
-import weibo4j.Account;
-import weibo4j.Comments;
-import weibo4j.Favorite;
-import weibo4j.Friendships;
-import weibo4j.Place;
-import weibo4j.PublicService;
-import weibo4j.Reminds;
-import weibo4j.Search;
-import weibo4j.ShortUrl;
-import weibo4j.Suggestion;
-import weibo4j.Tags;
-import weibo4j.Timeline;
-import weibo4j.Trend;
-import weibo4j.Users;
+import com.qq.connect.api.weibo.UserInfo;
+import com.qq.connect.api.weibo.Weibo;
+
 
 public interface QQ extends ApiBinding {
 
-	Account accountOperations();
+	UserInfo userInfoOperations();
 
-	Comments commentsOperations();
+	Weibo weiboOperations();
 
-	Favorite favoriteOperations();
 
-	Friendships friendshipsOperations();
-
-	Place placeOperations();
-
-	PublicService publicServiceOperations();
-
-	Reminds remindsOperations();
-
-	Search searchOperations();
-
-	ShortUrl shortUrlOperations();
-
-	Suggestion suggestionOperations();
-
-	Tags tagsOperations();
-
-	Timeline timelineOperations();
-
-	Trend trendOperations();
-
-	Users usersOperations();
 }

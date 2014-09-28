@@ -57,7 +57,7 @@ public class QQAdapter implements ApiAdapter<QQ> {
 	public UserProfile fetchUserProfile(QQ api) {
 		try {
 			UserInfoBean uib = api.userInfoOperations().getUserInfo();
-			return new UserProfileBuilder().setName(uib.getName()).setUsername(uib.getNickName()).build();
+			return new UserProfileBuilder().setName(uib.getName()).setUsername(uib.getNickName()).setEmail(uib.getEmail()).build();
 		} catch (Exception e) {
 			LOG.error("error fetchUserProfile", e);
 		}

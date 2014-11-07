@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.qq.connect.api.OpenID;
-import com.qq.connect.api.weibo.UserInfo;
+import com.qq.connect.api.qzone.UserInfo;
 import com.qq.connect.api.weibo.Weibo;
 
 import net.gplatform.spring.social.qq.api.QQ;
@@ -29,32 +29,43 @@ public class QQTemplate implements QQ {
 
 	private String accessToken;
 
-	private String openID;
-
-	private UserInfo userInfoOperations;
+	private String userOpenID;
+	private UserInfo qzoneUserInfoOperations;
+	private com.qq.connect.api.weibo.UserInfo weiboUserInfoOperations;
 	private Weibo weiboOperations;
 
 	public QQTemplate(String accessToken) {
 		try {
 			this.accessToken = accessToken;
 			OpenID openIDObj = new OpenID(accessToken);
-			openID = openIDObj.getUserOpenID();
-			userInfoOperations = new UserInfo(accessToken, openID);
-			weiboOperations = new Weibo(accessToken, openID);
+			userOpenID = openIDObj.getUserOpenID();
+			qzoneUserInfoOperations = new UserInfo(accessToken, userOpenID);
+			weiboUserInfoOperations = new com.qq.connect.api.weibo.UserInfo(accessToken, userOpenID);
+			weiboOperations = new Weibo(accessToken, userOpenID);
 		} catch (Exception e) {
 			LOG.error("Can not create QQTemplate", e);
 		}
 	}
-
-
+	
 	@Override
 	public boolean isAuthorized() {
 		return accessToken != null;
 	}
 
 	@Override
-	public UserInfo userInfoOperations() {
-		return userInfoOperations;
+	public String getUserOpenID() {
+		return userOpenID;
+	}
+
+	@Override
+	public UserInfo qzoneUserInfoOperations() {
+		return qzoneUserInfoOperations;
+	}
+	
+
+	@Override
+	public com.qq.connect.api.weibo.UserInfo weiboUserInfoOperations() {
+		return weiboUserInfoOperations;
 	}
 
 	@Override

@@ -24,7 +24,7 @@ import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
 import org.springframework.social.connect.UserProfileBuilder;
 
-import com.qq.connect.javabeans.weibo.UserInfoBean;
+import com.qq.connect.javabeans.qzone.UserInfoBean;
 
 public class QQAdapter implements ApiAdapter<QQ> {
 	private static final Logger LOG = LoggerFactory.getLogger(QQAdapter.class);
@@ -32,7 +32,7 @@ public class QQAdapter implements ApiAdapter<QQ> {
 	@Override
 	public boolean test(QQ api) {
 		try {
-			api.userInfoOperations().getUserInfo();
+			api.qzoneUserInfoOperations().getUserInfo();
 			return true;
 		} catch (Exception e) {
 			LOG.debug("", e);
@@ -43,9 +43,10 @@ public class QQAdapter implements ApiAdapter<QQ> {
 	@Override
 	public void setConnectionValues(QQ api, ConnectionValues values) {
 		try {
-			UserInfoBean uib = api.userInfoOperations().getUserInfo();
-			values.setProviderUserId(uib.getName());
-			values.setDisplayName(uib.getNickName());
+			values.setProviderUserId(api.getUserOpenID());
+			
+			UserInfoBean uib = api.qzoneUserInfoOperations().getUserInfo();
+			values.setDisplayName(uib.getNickname());
 			values.setProfileUrl(uib.getAvatar().getAvatarURL50());
 			values.setImageUrl(uib.getAvatar().getAvatarURL50());
 		} catch (Exception e) {
@@ -56,8 +57,8 @@ public class QQAdapter implements ApiAdapter<QQ> {
 	@Override
 	public UserProfile fetchUserProfile(QQ api) {
 		try {
-			UserInfoBean uib = api.userInfoOperations().getUserInfo();
-			return new UserProfileBuilder().setName(uib.getName()).setUsername(uib.getNickName()).setEmail(uib.getEmail()).build();
+			UserInfoBean uib = api.qzoneUserInfoOperations().getUserInfo();
+			return new UserProfileBuilder().setName(uib.getNickname()).setUsername(uib.getNickname()).build();
 		} catch (Exception e) {
 			LOG.error("error fetchUserProfile", e);
 		}

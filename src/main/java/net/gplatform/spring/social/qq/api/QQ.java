@@ -17,15 +17,18 @@ package net.gplatform.spring.social.qq.api;
 
 import org.springframework.social.ApiBinding;
 
-import com.qq.connect.api.weibo.UserInfo;
+import com.qq.connect.api.qzone.UserInfo;
 import com.qq.connect.api.weibo.Weibo;
 
 
 public interface QQ extends ApiBinding {
+	
+	String getUserOpenID();
 
-	UserInfo userInfoOperations();
+	UserInfo qzoneUserInfoOperations();
+	
+	com.qq.connect.api.weibo.UserInfo weiboUserInfoOperations();
 
 	Weibo weiboOperations();
-
-
+	
 }
